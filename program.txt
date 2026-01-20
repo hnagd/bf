@@ -1,0 +1,8 @@
+,>, //take inputs
+<[-> //setup outer loop
+[->+>+<<]>> //duplicate seccond input into next two nodes
+[-<<+>>] //move from node 3 to node 1
+<<<] //finish outer loop
+>[-] //clean up node 1
+>[-<<+>>]<< //move node 2 to node 0
+. //output the result
