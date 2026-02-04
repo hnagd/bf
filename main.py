@@ -5,6 +5,7 @@ def run():
     global program
     
     global consoleout
+    global outputtype
     
     instruction = program[programpointer]
     
@@ -21,8 +22,15 @@ def run():
         nodepointer -= 1
         
     elif (instruction == "."):
-        print(hex(list[nodepointer]))
-        consoleout.append(hex(list[nodepointer]))
+        if (outputtype == "hex"): 
+            print(hex(list[nodepointer]))
+            consoleout.append(hex(list[nodepointer]))
+        elif (outputtype == "int"):
+            print(int(list[nodepointer]))
+            consoleout.append(int(list[nodepointer]))
+        elif (outputtype == "ascii"):
+            print((list[nodepointer]).decode('int').encode('ascii', 'replace'))
+            consoleout.append((list[nodepointer]).decode('int').encode('ascii', 'replace'))
         
     elif (instruction == ","):
         catch = 1
@@ -63,13 +71,14 @@ def run():
 def renderlist():
     global consoleout
     global list
+    global outputtype
     
     print("")
     print("Output:")
-    print(','.join(consoleout))
+    print(str(consoleout))
     
     print("")
-    print("Cells:")
+    print("Cells (pg 1/40):")
     i = 0
     while i<20:
         print(','.join(convhex(list[i*20:i*20+19])))
@@ -114,6 +123,7 @@ def parsecommands():
     global rawprogram
     global nodepointer
     global consoleout
+    global outputtype
     command = input(":")
     
     #step program
@@ -161,6 +171,8 @@ def parsecommands():
         print("")
     elif (command[0:3] == "hlp"):
         instructions()
+    elif (command[0:3] == "cnf"):
+        print("1. Output type (curr:" + outputtype + ")")
     else:
         print("\ninvalaid command!")
     
@@ -170,6 +182,7 @@ list = [0] * 30 * 1000
 nodepointer = 0
 programpointer = 0
 consoleout = []
+outputtype = "int"
 
 # read file
 with open("program.txt") as f:
@@ -187,6 +200,7 @@ def instructions():
     #print("ref - refresh program from file") doesn't work
     print("raw - print raw program")
     print("com - get filtered program (program without comments)")
+    print("cnf - edit config variables")
     print("")
 instructions()
 while programpointer < len(program):
